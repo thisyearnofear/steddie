@@ -1,0 +1,19 @@
+{
+  "name": "hyperion-ai-contract",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "only-allow bun",
+    "compile": "hardhat compile",
+    "deploy:testnet": "hardhat run --network hyperion scripts/deploy.ts"
+  },
+  "devDependencies": {
+    "hardhat": "^2.22.2",
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "dotenv": "^16.4.5",
+    "solidity-coverage": "^0.8.5",
+    "typescript": "^5.4.5",
+    "ts-node": "^10.9.2",
+    "only-allow": "^1.2.1"
+  }
+}
