@@ -4,7 +4,8 @@
   "workspaces": [
     "on-chain-leaderboard",
     "frontend-leaderboard",
-    "hyperion-ai-contract"
+    "hyperion-ai-contract",
+    "hyperion-sdk"
   ],
   "scripts": {
     "postinstall": "only-allow bun"

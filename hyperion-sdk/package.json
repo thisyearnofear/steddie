@@ -1,0 +1,19 @@
+{
+  "name": "hyperion-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "postinstall": "only-allow bun",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "viem": "^1.28.1",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "only-allow": "^1.2.1"
+  }
+}
