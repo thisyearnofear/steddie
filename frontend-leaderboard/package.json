@@ -15,7 +15,8 @@
     "@preact/preset-vite": "^2.10.1",
     "@preact/signals": "^2.0.4",
     "js-base64": "^3.7.5",
-    "preact": "^10.26.6"
+    "preact": "^10.26.6",
+    "hyperion-sdk": "*"
   },
   "peerDependencies": {
     "@biomejs/biome": "^1.9.4",

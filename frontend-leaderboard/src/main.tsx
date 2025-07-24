@@ -3,11 +3,13 @@ import { render } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { callCadenceScript } from './utils';
 import { getLeaderboardScript, getLeaderboardScriptArgs } from './scripts';
+import { fetchCheatFlag } from './hyperion';
 
 type LeaderboardData = {
     rank: number;
     name: string;
     score: number;
+    cheatFlag?: number; // 0 = clean, 1 = suspect, 2 = banned, undefined = unknown
 }
 
 type LeaderboardDataRawStruct = {
@@ -90,16 +92,17 @@ function Leaderboard({ data, loading, error }: { data: Array<LeaderboardData> | 
                     <th>Rank</th>
                     <th>Participant Address</th>
                     <th>Score</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 {error ? (
                     <tr>
-                        <td colSpan={3} style={{ color: 'red' }}>{error}</td>
+                        <td colSpan={4} style={{ color: 'red' }}>{error}</td>
                     </tr>
                 ) : loading ? (
                     <tr>
-                        <td colSpan={3}>Loading...</td>
+                        <td colSpan={4}>Loading...</td>
                     </tr>
                 ) : data && data.length > 0 ? (
                     data.map((entry) => (
@@ -107,11 +110,17 @@ function Leaderboard({ data, loading, error }: { data: Array<LeaderboardData> | 
                             <td>{entry.rank}</td>
                             <td>{entry.name}</td>
                             <td>{entry.score}</td>
+                            <td>
+                                {entry.cheatFlag === 0 && <span className="badge badge-clean" title="Clean">✅</span>}
+                                {entry.cheatFlag === 1 && <span className="badge badge-suspect" title="Suspect">⚠</span>}
+                                {entry.cheatFlag === 2 && <span className="badge badge-banned" title="Banned">❌</span>}
+                                {(entry.cheatFlag === undefined || entry.cheatFlag === null) && <span className="badge badge-unknown" title="Unknown">–</span>}
+                            </td>
                         </tr>
                     ))
                 ) : (
                     <tr>
-                        <td colSpan={3}>No data</td>
+                        <td colSpan={4}>No data</td>
                     </tr>
                 )}
             </tbody>
@@ -128,8 +137,19 @@ function App() {
     useEffect(() => {
         setLoading(true);
         setError(null);
-        fetchLeaderboardData(tab.toLowerCase() as 'overall' | 'current').then((d) => {
-            setData(d);
+        fetchLeaderboardData(tab.toLowerCase() as 'overall' | 'current').then(async (d) => {
+            // For each entry, fetch cheatFlag concurrently
+            const periodId = tab === 'Overall' ? 0 : 1; // you may want to enhance this logic
+            const results = await Promise.all(
+                d.map(async entry => {
+                    let cheatFlag: number | null = null;
+                    try {
+                        cheatFlag = await fetchCheatFlag(entry.name, periodId);
+                    } catch { /* silent fail */ }
+                    return { ...entry, cheatFlag };
+                })
+            );
+            setData(results);
             setLoading(false);
         }).catch((e) => {
             setError(e.message);
