@@ -1,0 +1,15 @@
+{
+  "name": "shared-utils",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "postinstall": "only-allow bun",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "only-allow": "^1.2.1"
+  }
+}

@@ -22,8 +22,9 @@
     "formatter": {
         "enabled": true,
         "indentStyle": "space",
-        "indentWidth": 4,
-        "lineWidth": 100
+        "indentWidth": 2,
+        "lineWidth": 100,
+        "quoteStyle": "double"
     },
     "javascript": {
         "parser": {

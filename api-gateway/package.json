@@ -11,6 +11,8 @@
     "fastify": "^4.26.2",
     "ioredis": "^5.3.2",
     "hyperion-sdk": "*",
+    "flow-sdk": "*",
+    "shared-utils": "*",
     "js-base64": "^3.7.5",
     "dotenv": "^16.4.5"
   },

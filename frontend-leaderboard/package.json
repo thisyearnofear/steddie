@@ -16,7 +16,9 @@
     "@preact/signals": "^2.0.4",
     "js-base64": "^3.7.5",
     "preact": "^10.26.6",
-    "hyperion-sdk": "*"
+    "hyperion-sdk": "*",
+    "flow-sdk": "*",
+    "shared-utils": "*"
   },
   "peerDependencies": {
     "@biomejs/biome": "^1.9.4",
