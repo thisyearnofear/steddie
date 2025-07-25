@@ -118,3 +118,38 @@ button:focus-visible {
 .leaderboard-table tr:nth-child(even) {
   background: #222;
 }
+
+/* Badges for cheat flag */
+.badge {
+  display: inline-block;
+  min-width: 1.8em;
+  font-size: 1.2em;
+  text-align: center;
+  border-radius: 0.7em;
+  padding: 0.1em 0.5em;
+  font-weight: bold;
+}
+
+.badge-clean {
+  background: #e6ffe6;
+  color: #13c013;
+  border: 1px solid #b6e6b6;
+}
+
+.badge-suspect {
+  background: #fffbe6;
+  color: #d6b800;
+  border: 1px solid #f6e6b6;
+}
+
+.badge-banned {
+  background: #ffe6e6;
+  color: #c01313;
+  border: 1px solid #e6b6b6;
+}
+
+.badge-unknown {
+  background: #f3f3f3;
+  color: #888;
+  border: 1px solid #eee;
+}

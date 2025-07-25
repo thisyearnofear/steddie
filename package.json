@@ -3,7 +3,9 @@
   "private": true,
   "workspaces": [
     "on-chain-leaderboard",
-    "frontend-leaderboard"
+    "frontend-leaderboard",
+    "hyperion-ai-contract",
+    "hyperion-sdk"
   ],
   "scripts": {
     "postinstall": "only-allow bun"
