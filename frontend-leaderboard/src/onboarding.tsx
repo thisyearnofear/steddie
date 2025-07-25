@@ -1,9 +1,19 @@
 import { useState, useEffect } from "preact/hooks";
 import { createSmartAccount } from "./auth";
 
+function getFlowAddress(): string {
+  // TODO: Use current user's Flow address (lowercase, no 0x). For demo, generate random.
+  if (!localStorage.getItem("memoree_flow")) {
+    const rand = Array.from(crypto.getRandomValues(new Uint8Array(16))).map(x => x.toString(16).padStart(2, "0")).join("");
+    localStorage.setItem("memoree_flow", rand);
+  }
+  return localStorage.getItem("memoree_flow")!;
+}
+
 export function OnboardingModal({ onClose }: { onClose: () => void }) {
   const [open, setOpen] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!localStorage.getItem("memoree_seen")) {
@@ -19,9 +29,15 @@ export function OnboardingModal({ onClose }: { onClose: () => void }) {
 
   const handleSave = async () => {
     setCreating(true);
-    await createSmartAccount();
-    setCreating(false);
-    closeAndRemember();
+    setError(null);
+    try {
+      await createSmartAccount(getFlowAddress());
+      setCreating(false);
+      closeAndRemember();
+    } catch (e: any) {
+      setError(e.message || "Failed to link");
+      setCreating(false);
+    }
   };
 
   if (!open) return null;
@@ -35,9 +51,10 @@ export function OnboardingModal({ onClose }: { onClose: () => void }) {
         <div style={{ marginTop: "2em", display: "flex", gap: "1em", justifyContent:"center" }}>
           <button onClick={closeAndRemember} disabled={creating}>Play Demo</button>
           <button onClick={handleSave} disabled={creating}>
-            {creating ? "Setting up..." : "Save Progress"}
+            {creating ? "Linking…" : "Save Progress"}
           </button>
         </div>
+        {error && <div style={{ color: "salmon", marginTop: "1em" }}>{error}</div>}
       </div>
     </div>
   );

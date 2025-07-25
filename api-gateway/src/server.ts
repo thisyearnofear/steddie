@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import Redis from "ioredis";
 import { callCadenceScript, getLeaderboardScript, getLeaderboardScriptArgs } from "./flow";
 import { getPlayerSummary } from "hyperion-sdk";
+import { relaySetMapping, recoverSigner, waitForTxMined } from "./hyperion";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -64,6 +65,53 @@ fastify.get("/leaderboard", async (request, reply) => {
     // Cache for 30s
     await redis.set(cacheKey, JSON.stringify(rows), "EX", 30);
     reply.header("content-type", "application/json").send(rows);
+});
+
+// Link address: POST /link-address { flowAddress, signature }
+fastify.post("/link-address", async (request, reply) => {
+    const { flowAddress, signature } = request.body as { flowAddress?: string, signature?: string };
+    // Validate Flow address (lowercase hex, no 0x, 16-64 chars)
+    if (!flowAddress || typeof flowAddress !== "string" || !/^[0-9a-f]{16,64}$/.test(flowAddress)) {
+        reply.status(400).send({ error: "Invalid flowAddress" });
+        return;
+    }
+    if (!signature || typeof signature !== "string") {
+        reply.status(400).send({ error: "Missing signature" });
+        return;
+    }
+    // Recover signer
+    let signer;
+    try {
+        signer = await recoverSigner(flowAddress, signature);
+    } catch (e) {
+        reply.status(400).send({ error: "Invalid signature" });
+        return;
+    }
+    // Relay tx
+    let txHash;
+    try {
+        txHash = await relaySetMapping(flowAddress, signer);
+    } catch (e) {
+        reply.status(500).send({ error: "Relay failed", details: (e as Error).message });
+        return;
+    }
+    // Optionally wait for mining here, or let client poll
+    reply.send({ txHash });
+});
+
+// Optionally: add GET /tx-status?hash=... for mining poll
+fastify.get("/tx-status", async (request, reply) => {
+    const hash = (request.query as any).hash;
+    if (!hash || typeof hash !== "string" || !hash.startsWith("0x")) {
+        reply.status(400).send({ mined: false, error: "Invalid hash" });
+        return;
+    }
+    try {
+        const mined = await waitForTxMined(hash);
+        reply.send({ mined });
+    } catch {
+        reply.send({ mined: false });
+    }
 });
 
 // Fastify startup
