@@ -1,61 +1,10 @@
 import './style.css';
 import { render } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { callCadenceScript } from './utils';
-import { getLeaderboardScript, getLeaderboardScriptArgs } from './scripts';
-import { fetchCheatFlag } from './hyperion';
+import { getLeaderboard, LeaderboardData } from './api';
+import { OnboardingModal } from './onboarding';
 
-type LeaderboardData = {
-    rank: number;
-    name: string;
-    score: number;
-    cheatFlag?: number; // 0 = clean, 1 = suspect, 2 = banned, undefined = unknown
-}
 
-type LeaderboardDataRawStruct = {
-    type: "Struct";
-    value: {
-        fields: [
-            { name: "participant", value: { type: "String", value: string } },
-            { name: "score", value: { type: "UFix64", value: string } },
-        ],
-        id: string;
-    }
-}
-
-// Simulate async fetch for leaderboard data
-async function fetchLeaderboardData(type: 'overall' | 'current'): Promise<Array<LeaderboardData>> {
-    let res: { type: "Array"; value: Array<LeaderboardDataRawStruct> } = { type: "Array", value: [] };
-    if (type === 'overall') {
-        res = await callCadenceScript(getLeaderboardScript, getLeaderboardScriptArgs(undefined));
-    } else {
-        const now = Date.now()
-        const periods = [
-            { key: "week1", start: 1746316800.0, end: 1746921600.0 },
-            { key: "week2", start: 1746921600.0, end: 1747526400.0 },
-            { key: "week3", start: 1747526400.0, end: 1748131200.0 },
-            { key: "week4", start: 1748131200.0, end: 1748736000.0 },
-        ]
-        const currentPeriod = periods.find((p) => now >= p.start && now <= p.end)
-        if (currentPeriod) {
-            res = await callCadenceScript(getLeaderboardScript, getLeaderboardScriptArgs(currentPeriod.key));
-        }
-    }
-    const returnData: Array<Partial<LeaderboardData>> = [];
-    for (const r of res.value) {
-        returnData.push({
-            name: r.value.fields[0].value.value,
-            score: Number.parseFloat(r.value.fields[1].value.value),
-        })
-    }
-    return returnData
-        .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
-        .map((r, i) => ({
-            rank: i + 1,
-            name: r.name ?? "",
-            score: r.score ?? 0,
-        }));
-}
 
 // Tab component
 function Tabs({ tabs, current, onTabChange }: { tabs: string[]; current: string; onTabChange: (tab: string) => void }) {
@@ -137,19 +86,8 @@ function App() {
     useEffect(() => {
         setLoading(true);
         setError(null);
-        fetchLeaderboardData(tab.toLowerCase() as 'overall' | 'current').then(async (d) => {
-            // For each entry, fetch cheatFlag concurrently
-            const periodId = tab === 'Overall' ? 0 : 1; // you may want to enhance this logic
-            const results = await Promise.all(
-                d.map(async entry => {
-                    let cheatFlag: number | null = null;
-                    try {
-                        cheatFlag = await fetchCheatFlag(entry.name, periodId);
-                    } catch { /* silent fail */ }
-                    return { ...entry, cheatFlag };
-                })
-            );
-            setData(results);
+        getLeaderboard(tab).then((d) => {
+            setData(d);
             setLoading(false);
         }).catch((e) => {
             setError(e.message);
@@ -168,5 +106,11 @@ function App() {
 
 const app = document.getElementById('app');
 if (app) {
-    render(<App />, app);
+    render(
+      <>
+        <OnboardingModal onClose={() => {}} />
+        <App />
+      </>,
+      app
+    );
 }
