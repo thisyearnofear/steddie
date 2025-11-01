@@ -4,6 +4,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { callCadenceScript } from './utils';
 import { getLeaderboardScript, getLeaderboardScriptArgs } from './scripts';
 import { fetchCheatFlag } from './hyperion';
+import { ForteDashboard } from './forte-dashboard';
 
 type LeaderboardData = {
     rank: number;
@@ -129,12 +130,15 @@ function Leaderboard({ data, loading, error }: { data: Array<LeaderboardData> | 
 }
 
 function App() {
-    const [tab, setTab] = useState<'Overall' | 'Current'>('Overall');
+    const [tab, setTab] = useState<'Overall' | 'Current' | 'Forte'>('Forte');
     const [data, setData] = useState<Array<LeaderboardData> | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [userAddress, setUserAddress] = useState<string>('0xe647591c05619dba'); // Demo address
 
     useEffect(() => {
+        if (tab === 'Forte') return; // Skip data fetching for Forte tab
+
         setLoading(true);
         setError(null);
         fetchLeaderboardData(tab.toLowerCase() as 'overall' | 'current').then(async (d) => {
@@ -159,9 +163,14 @@ function App() {
 
     return (
         <div>
-            <h1>Leaderboard</h1>
-            <Tabs tabs={['Overall', 'Current']} current={tab} onTabChange={(t) => setTab(t as 'Overall' | 'Current')} />
-            <Leaderboard data={data} loading={loading} error={error} />
+            <h1>🏆 Memory Leaderboard & Automation</h1>
+            <Tabs tabs={['Forte', 'Overall', 'Current']} current={tab} onTabChange={(t) => setTab(t as 'Overall' | 'Current' | 'Forte')} />
+
+            {tab === 'Forte' ? (
+                <ForteDashboard userAddress={userAddress} />
+            ) : (
+                <Leaderboard data={data} loading={loading} error={error} />
+            )}
         </div>
     );
 }

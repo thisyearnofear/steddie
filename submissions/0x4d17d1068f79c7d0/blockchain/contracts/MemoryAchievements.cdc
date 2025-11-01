@@ -241,6 +241,9 @@ access(all) contract MemoryAchievements: NonFungibleToken {
 
     // Minter resource for creating achievements
     access(all) resource NFTMinter {
+        init() {
+        }
+
         access(all) fun mintNFT(
             recipient: &{NonFungibleToken.CollectionPublic},
             achievementId: String,
@@ -284,6 +287,8 @@ access(all) contract MemoryAchievements: NonFungibleToken {
             return nftId
         }
     }
+    
+
 
     // Public function to create empty collection
     access(all) fun createEmptyCollection(nftType: Type): @{NonFungibleToken.Collection} {
@@ -384,6 +389,8 @@ access(all) contract MemoryAchievements: NonFungibleToken {
 
         return achievements
     }
+
+
 
     init() {
         self.totalSupply = 0

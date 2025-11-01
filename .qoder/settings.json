@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "ask": [
+      "Read(!/Users/udingethe/dev/steddie/**)",
+      "Edit(!/Users/udingethe/dev/steddie/**)"
+    ],
+    "allow": [
+      "Read(/Users/udingethe/dev/steddie/**)",
+      "Edit(/Users/udingethe/dev/steddie/**)"
+    ]
+  },
+  "memoryImport": {},
+  "monitoring": {}
+}

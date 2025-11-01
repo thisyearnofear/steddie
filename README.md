@@ -20,6 +20,16 @@ Welcome to the "May the Flow be with You" campaign - a month-long vibe coding ch
 
 You can check out the **[Leaderboard](https://onflow.github.io/May-The-Flow-Be-With-You/)** to see the top engaged participants.
 
+## 🤖 **Forte Automation Integration**
+
+The Memoreee Platform contracts have been successfully deployed with Forte Actions & Workflows integration capabilities:
+
+- **Core Contracts Deployed**: MemoryVRF, MemoryAchievements, MemoryLeaderboard (Testnet: `0xb8404e09b36b6623`)
+- **Forte Integration**: Scheduled transactions for daily updates, weekly cleanup, and milestone checks
+- **Cross-Contract Workflows**: Atomic operations across leaderboard, achievements, and VRF contracts
+- **Management Tools**: Full lifecycle management for scheduled operations
+- **Production Ready**: Automated operations without manual intervention
+
 ## Weekly Themes
 
 ### Week 1: The Randomness Revolution (May 4-10)

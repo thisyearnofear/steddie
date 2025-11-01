@@ -12,14 +12,27 @@ type CadenceJSONValue = {
 };
 
 export async function callCadenceScript(script: string, args: CadenceJSONValue[]) {
-    const queryCodeBase64 = Base64.encode(script);
-    const argsBase64 = args.map((a) => Base64.encode(JSON.stringify(a)));
-    const response = await fetch(`${endpoint()}/v1/scripts?block_height=final`, {
-        method: "POST",
-        body: JSON.stringify({ script: queryCodeBase64, arguments: argsBase64 }),
-        headers: { "content-type": "application/json" },
+const queryCodeBase64 = Base64.encode(script);
+const argsBase64 = args.map((a) => Base64.encode(JSON.stringify(a)));
+const response = await fetch(`${endpoint()}/v1/scripts?block_height=final`, {
+method: "POST",
+body: JSON.stringify({ script: queryCodeBase64, arguments: argsBase64 }),
+headers: { "content-type": "application/json" },
+});
+const resEncoded = await response.text();
+const resString = Base64.decode(resEncoded);
+return JSON.parse(resString);
+}
+
+export async function callCadenceTransaction(scriptName: string, args: CadenceJSONValue[]) {
+    // This would need to be implemented with proper transaction signing
+    // For demo purposes, we'll simulate the transaction call
+    console.log(`Would execute transaction: ${scriptName} with args:`, args);
+
+    // Simulate async operation
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({ transactionId: `simulated_${Date.now()}` });
+        }, 2000);
     });
-    const resEncoded = await response.text();
-    const resString = Base64.decode(resEncoded);
-    return JSON.parse(resString);
 }

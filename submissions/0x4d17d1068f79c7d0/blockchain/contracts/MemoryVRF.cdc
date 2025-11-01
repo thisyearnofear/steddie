@@ -141,6 +141,8 @@ access(all) contract MemoryVRF {
             }
         }
     }
+    
+
 
     // Create a new consumer resource
     access(all) fun createConsumer(): @Consumer {

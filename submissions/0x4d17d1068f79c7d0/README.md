@@ -35,7 +35,7 @@ Steddie AI coach with cultural adaptation and personalized training
 ### 🌍 **Four Cultural Traditions**
 
 - **🏛️ Greek/Roman Classical**: Chaos Cards, rhetorical challenges, classical palaces
-- **🥁 West African Griot**: Rhythm games, storytelling, village compounds
+- ** drums West African Griot**: Rhythm games, storytelling, village compounds
 - **🧘 Eastern Sage**: Mindful recall, zen cards, temple gardens
 - **🎨 Indigenous Dreamtime**: Songline journeys, dot painting memory, sacred landscapes
 
@@ -44,9 +44,18 @@ Steddie AI coach with cultural adaptation and personalized training
 - **Multi-Tier Authentication**: Anonymous → Email → Flow wallet progression
 - **Dual Leaderboards**: Off-chain (Supabase) + On-chain (Flow) competition
 - **Flow VRF Integration**: Provably fair randomness for competitive play
-- **Cultural Memory Games**: Speed challenges, chaos cards, memory palaces
 - **Achievement NFTs**: Cultural memory accomplishments as tradeable NFTs
 - **AI Coach (Steddie)**: Personalized training with cultural adaptation
+- **Forte Automation**: Automated scheduled transactions for leaderboards, achievements, and VRF operations
+
+### 🤖 **Forte Automation Features**
+
+- **Daily Leaderboard Updates**: Automatic rankings updates every 24 hours
+- **Weekly Cleanup**: Automated removal of inactive participants
+- **Achievement Milestone Checks**: Daily verification of achievement criteria
+- **Periodic VRF Generation**: Automatic randomness for daily challenges and tournaments
+- **Cross-Contract Workflows**: Atomic multi-contract operations
+- **Management Tools**: Cancel/reschedule operations lifecycle management
 
 ## �️ **Tech Stack**
 

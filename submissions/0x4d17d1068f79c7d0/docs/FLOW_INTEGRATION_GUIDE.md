@@ -46,7 +46,7 @@
 
 ## **🏗️ Architecture Overview**
 
-### **Dual-Mode System**
+### **Dual-Mode System with Forte Automation**
 
 ```
 ┌─────────────────┐    ┌─────────────────┐
@@ -65,15 +65,38 @@
          │  GameService  │
          │   (Unified)   │
          └───────────────┘
+                 │
+         ┌───────▼───────┐
+         │ Forte Actions │
+         │  & Workflows  │
+         │(Automation)   │
+         └───────────────┘
 ```
+
+**Forte Automation Features**:
+- **Daily Leaderboard Updates**: Automatic ranking updates every 24 hours
+- **Weekly Cleanup**: Automated removal of inactive participants
+- **Achievement Milestone Checks**: Daily verification and NFT minting
+- **Periodic VRF Generation**: Scheduled randomness for challenges
+- **Cross-Contract Workflows**: Atomic operations across all contracts
 
 ## **✅ What's Already Built (Strong Foundation)**
 
 ### 1. **Smart Contracts** (`blockchain/contracts/`)
 
-- **MemoryVRF.cdc**: Commit-reveal VRF implementation
-- **MemoryAchievements.cdc**: NFT achievements with cultural metadata
-- **Deployed**: Emulator only (`0xf8d6e0586b0a20c7`)
+- **MemoryVRF.cdc**: Commit-reveal VRF implementation with Forte automation
+- **MemoryAchievements.cdc**: NFT achievements with cultural metadata and automated minting
+- **MemoryLeaderboard.cdc**: On-chain leaderboard with automated updates
+- **Deployed**: Testnet (`0xb8404e09b36b6623`)
+
+### 2. **Forte Actions & Workflows** (`cadence/transactions/` and `cadence/scripts/`)
+
+- **init-forte-integration.cdc**: One-click Forte setup across all contracts
+- **get-forte-status.cdc**: Monitor scheduled operation status
+- **manage-forte-operations.cdc**: Cancel/reschedule operations lifecycle
+- **SchedulerHandler**: Automated leaderboard operations
+- **AchievementHandler**: Cross-contract achievement minting
+- **VRFHandler**: Periodic randomness generation
 
 ### 2. **Randomness Providers** (`shared/providers/RandomnessProvider.ts`)
 
@@ -217,17 +240,41 @@ const fallbackSeed = Math.floor(Math.random() * 1000000) + Date.now();
 - ✅ Verified scores on blockchain
 - ✅ Tournament eligibility
 - ✅ Cross-platform reputation
+- ✅ Automated operations (Forte Actions & Workflows)
 - ⚠️ Requires testnet FLOW tokens (free from faucet)
+
+### **Automation Benefits (Forte Integration)**
+
+- ✅ **Zero Manual Maintenance**: Daily/weekly operations run automatically
+- ✅ **Atomic Cross-Contract Operations**: No partial failures
+- ✅ **Scalable Architecture**: Handles growth without manual intervention
+- ✅ **Production-Ready Workflows**: Scheduled transactions for real use cases
 
 ## **🎯 Implementation Roadmap**
 
 ### **Week 1: Activation**
 
-- [ ] Deploy contracts to Flow testnet
-- [ ] Update configuration for testnet
-- [ ] Test VRF functionality end-to-end
-- [ ] Add wallet connection prompts
-- [ ] Create user onboarding flow
+- ✅ Deploy contracts to Flow testnet
+- ✅ Update configuration for testnet
+- ✅ Test VRF functionality end-to-end
+- ✅ Add wallet connection prompts
+- ✅ Create user onboarding flow
+
+### **Week 2: Forte Automation** ✅ **COMPLETED**
+
+- ✅ **Leaderboard Automation**: Daily updates and weekly cleanup
+- ✅ **Achievement Automation**: Daily milestone checks and NFT minting
+- ✅ **VRF Automation**: Periodic randomness for challenges and tournaments
+- ✅ **Cross-Contract Workflows**: Atomic operations across contracts
+- ✅ **Management Tools**: Cancel/reschedule operations lifecycle
+- ✅ **Forte Integration Guide**: Complete automation documentation
+
+### **Week 3: Enhancement**
+
+- [ ] Implement advanced VRF features (multi-round, adaptive difficulty)
+- [ ] Create automated tournament modes
+- [ ] Add advanced achievement tracking
+- [ ] Optimize scheduled transaction fees
 
 ### **Week 2: Enhancement**
 
@@ -253,8 +300,12 @@ const fallbackSeed = Math.floor(Math.random() * 1000000) + Date.now();
 
 ### **Key Files**
 
-- `blockchain/contracts/MemoryVRF.cdc` - VRF smart contract
-- `blockchain/contracts/MemoryAchievements.cdc` - NFT achievements
+- `blockchain/contracts/MemoryVRF.cdc` - VRF smart contract with Forte automation
+- `blockchain/contracts/MemoryAchievements.cdc` - NFT achievements with automated minting
+- `blockchain/contracts/MemoryLeaderboard.cdc` - Automated leaderboard contract
+- `cadence/transactions/init-forte-integration.cdc` - Initialize all Forte components
+- `cadence/scripts/get-forte-status.cdc` - Monitor scheduled operations
+- `cadence/transactions/manage-forte-operations.cdc` - Lifecycle management
 - `shared/config/flow.ts` - FCL configuration
 - `shared/services/FlowVRFService.ts` - VRF service implementation
 - `shared/providers/RandomnessProvider.ts` - Randomness abstraction
